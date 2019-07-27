@@ -1,12 +1,12 @@
 module.exports = function(http) {
-    var io = require('socket.io')(http);
-
-    io.on('connection', function(socket){
-        socket.use((packet, next) => {
-            // Handler
-            console.log(packet)
-            next();
+    const WebSocket = require('ws');
+    const appSocket = new WebSocket.Server({ server: http })
+    
+    appSocket.on('connection', function connection(ws, req){
+        console.log(req.headers)
+        ws.on('message', function incoming(message) {
+            console.log('received: %s', message);
         });
-    });
+    })
 }
 
